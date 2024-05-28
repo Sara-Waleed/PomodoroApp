@@ -7,10 +7,10 @@ class DataModel {
 
 }
 
-class DataScreen extends StatelessWidget {
-   DataScreen({Key? key,}) : super(key: key);
+class dataScreen extends StatelessWidget {
+   dataScreen({Key? key,}) : super(key: key);
 
-   List<DataModel> Data = [
+  final  List<DataModel> Data = [
      DataModel(number: "5",text:  "Total sessions"),
      DataModel( number: "4",text:  "Longest sessions"),
      DataModel(number:  "100", text: "Number of session"),
@@ -59,16 +59,9 @@ class DataScreen extends StatelessWidget {
                     ],
                     borderRadius: BorderRadiusDirectional.circular(20),
                   ),
-               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icons[index],size: 50),
-                    SizedBox(height: 5,),
-                    Text("12",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-                    SizedBox(height: 5,),
-                    Text("last session"),
-                  ],
+               child:GridItem(
+                  dataModel: Data[index],
+                  icon: icons[index],
                 ),
 
                 ),),
@@ -78,27 +71,32 @@ class DataScreen extends StatelessWidget {
     );
   }
 }
+class GridItem extends StatelessWidget {
+  final DataModel dataModel;
+  final IconData icon;
 
-// class GridItem extends StatelessWidget {
-//    GridItem({
-//     super.key,
-// required this.icon,
-//   });
-//
-// final Icon icon;
-//   @override
-//   Widget build(BuildContext context) {
-//
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Icon(icon,size: 50),
-//         SizedBox(height: 5,),
-//         Text("12",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-//         SizedBox(height: 5,),
-//         Text("last session"),
-//       ],
-//     );
-//   }
-// }
+  GridItem({
+    Key? key,
+    required this.dataModel,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, size: 50),
+        SizedBox(height: 5),
+        Text(
+          dataModel.number,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 5),
+        Text(dataModel.text),
+      ],
+    );
+  }
+}
+

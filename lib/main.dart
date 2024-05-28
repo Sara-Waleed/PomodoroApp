@@ -7,7 +7,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-      home: DataScreen(),
+      home: dataScreen(),
     );
   }
 }
