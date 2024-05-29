@@ -1,13 +1,11 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pomodoro/view/screens/Home.dart';
+
 
 class InitialScreen extends StatelessWidget {
-  final bool isDark;
-  final VoidCallback toggleTheme;
 
-  const InitialScreen({required this.isDark, required this.toggleTheme, Key? key}) : super(key: key);
+  const InitialScreen({ Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +25,7 @@ class InitialScreen extends StatelessWidget {
           SizedBox(height: 40),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(
-                    isDark: isDark,
-                    Toggle: toggleTheme,
-                  ),
-                ),
-              );
+             Navigator.pushReplacementNamed(context, "Home");
             },
             child: Text(
               "Start",
