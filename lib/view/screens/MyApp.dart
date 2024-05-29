@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pomodoro/view/screens/DataScreen.dart';
 import 'package:pomodoro/view/screens/History.dart';
 import 'package:pomodoro/view/screens/MainScreen.dart';
+import 'package:pomodoro/view/screens/SessionScreen.dart';
 import 'package:pomodoro/view/screens/splash.dart';
 
 import '../../control/constants.dart';
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
         "Splash": (context) => InitialScreen(),
         "Data":(context) => dataScreen(),
         "History":(context) => History(),
+        "Session":(context) => SessionScreen(),
       },
       debugShowCheckedModeBanner: false,
       theme: lightTheme,

@@ -39,7 +39,9 @@ class HomeBody extends StatelessWidget {
 
             SizedBox(height: 50,),
             GestureDetector(
-                onTap: (){},
+                onTap: (){
+                  Navigator.pushNamed(context,"Session" );
+                },
                 child: Container(
                   height: 50,
                   width: 180,
