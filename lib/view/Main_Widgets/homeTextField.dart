@@ -14,11 +14,15 @@ class homeTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(onChanged: (value) {
+    return TextFormField(
+
+      keyboardType: TextInputType.number,
+      onChanged: (value) {
       value=controller.text;
 
     },
       decoration: InputDecoration(
+
           hintText:text,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),

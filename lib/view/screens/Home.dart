@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
         ],
       ),
 
-      body: HomeBody(controller: controller),
+      body: HomeBody(),
     );
   }
 }
