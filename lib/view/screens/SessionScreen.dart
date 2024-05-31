@@ -1,8 +1,5 @@
 
-import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:timer_count_down/timer_count_down.dart';
-
 import '../Main_Widgets/CircularBar.dart';
 
 

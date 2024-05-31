@@ -1,78 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../screens/SessionScreen.dart';
-import 'homeTextField.dart';
 
-// class HomeBody extends StatelessWidget {
-//    HomeBody({
-//     super.key,
-//   });
-//
-//
-//   final TextEditingController workDurationController = TextEditingController();
-//   final TextEditingController breakDurationController = TextEditingController();
-//   final TextEditingController sessionsController = TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 18.0,vertical: 38),
-//       child: SingleChildScrollView(
-//         scrollDirection: Axis.vertical,
-//         child: Column(
-//           children: [
-//             Text("Work Duration",style: TextStyle(
-//                 fontSize: 25
-//             ),),
-//             SizedBox(height: 15,),
-//             homeTextField(controller: workDurationController,text: "(In Minutes)"),
-//             SizedBox(height: 30,),
-//             Text("Break Duration",style: TextStyle(
-//                 fontSize: 25
-//             ),),
-//             SizedBox(height: 15,),
-//             homeTextField(controller: breakDurationController,text: "(In Minutes)"),
-//             SizedBox(height: 30,),
-//             Text("Sessions",style: TextStyle(
-//                 fontSize: 25
-//             ),),
-//             SizedBox(height: 15,),
-//             homeTextField(controller: sessionsController,text: "(number of work sessions)"),
-//
-//             SizedBox(height: 50,),
-//             GestureDetector(
-//                 onTap: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                       builder: (context) => SessionScreen(
-//                         workDuration: workDurationController.text,
-//                         breakDuration: breakDurationController.text,
-//                         sessions: sessionsController.text,
-//                       ),
-//                     ),
-//                   );
-//                 },
-//                 child: Container(
-//                   height: 50,
-//                   width: 180,
-//                   decoration: BoxDecoration(
-//                     color: Colors.blue,
-//                     borderRadius: BorderRadiusDirectional.circular(20),
-//                   ),
-//                   child: Center(child: Text("Start",style: TextStyle(
-//                     fontSize: 25,
-//
-//                   ),)),
-//                 )),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-import 'package:flutter/material.dart';
+
 
 class HomeBody extends StatefulWidget {
   @override
