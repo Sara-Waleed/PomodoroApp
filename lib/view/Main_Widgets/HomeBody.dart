@@ -129,7 +129,9 @@
 //
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pomodoro/view/Main_Widgets/_buildTextField.dart';
 import '../screens/SessionScreen.dart';
+import 'CounterTitle.dart';
 
 class HomeBody extends StatefulWidget {
   @override
@@ -151,17 +153,6 @@ class _HomeBodyState extends State<HomeBody> {
     super.dispose();
   }
 
-  // Validation function for text fields
-  String? _validateField(String? value, String fieldName) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter $fieldName';
-    }
-    // Check if the value is a valid number
-    if (int.tryParse(value) == null) {
-      return 'Please enter a valid number';
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,22 +165,22 @@ class _HomeBodyState extends State<HomeBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildTitle('Work Duration'),
-                _buildTextField(
+                CounterTitle('Work Duration'),
+                buildTextField(
                   controller: workDurationController,
                   hintText: "(In Minutes)",
                   fieldName: 'work duration',
                 ),
                 SizedBox(height: 30),
-                _buildTitle('Break Duration'),
-                _buildTextField(
+                CounterTitle('Break Duration'),
+                buildTextField(
                   controller: breakDurationController,
                   hintText: "(In Minutes)",
                   fieldName: 'break duration',
                 ),
                 SizedBox(height: 30),
-                _buildTitle('Sessions'),
-                _buildTextField(
+                CounterTitle('Sessions'),
+                buildTextField(
                   controller: sessionsController,
                   hintText: "(Number of work sessions)",
                   fieldName: 'session number',
@@ -204,32 +195,8 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 
-  // Widget for displaying the title of each section
-  Widget _buildTitle(String title) {
-    return Center(child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Text(title, style: TextStyle(fontSize: 25)),
-    ));
-  }
 
-  // Widget for building a text form field with validation
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required String fieldName,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        hintText: hintText,
-      ),
-      keyboardType: TextInputType.number,
-      validator: (value) => _validateField(value, fieldName),
-    );
-  }
+
 
   // Widget for building the start button with validation check
   Widget _buildStartButton(BuildContext context) {
@@ -244,7 +211,7 @@ class _HomeBodyState extends State<HomeBody> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SessionScreen(
+              builder: (context) => TimerScreen(
                 workDuration: workDuration,
                 breakDuration: breakDuration,
                 sessions: sessions,
