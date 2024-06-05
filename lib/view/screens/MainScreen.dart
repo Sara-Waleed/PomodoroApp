@@ -17,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     dataScreen(),
     InitialScreen(),
-    History(),
+    historyPage(),
   ];
 
   void _onItemTapped(int index) {

@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
         ),
         "Splash": (context) => InitialScreen(),
         "Data":(context) => dataScreen(),
-        "History":(context) => History(),
+        "History":(context) => historyPage(),
       },
       debugShowCheckedModeBanner: false,
       theme: lightTheme,

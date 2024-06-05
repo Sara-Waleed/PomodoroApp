@@ -1,7 +1,7 @@
 // import 'package:circular_seek_bar/circular_seek_bar.dart';
 // import 'package:flutter/material.dart';
-// import 'package:timer_count_down/timer_count_down.dart';
 // import 'package:timer_count_down/timer_controller.dart';
+// import 'package:timer_count_down/timer_count_down.dart';
 //
 // class TimerScreen extends StatefulWidget {
 //   final int workDuration;
@@ -23,15 +23,12 @@
 //   bool _isWorkTime = true;
 //   int _currentSession = 1;
 //   bool _isRunning = true;
-//
 //   late ValueNotifier<double> _progress;
-//   late ValueNotifier<double> _valueNotifier;
 //
 //   @override
 //   void initState() {
 //     super.initState();
-//     _progress = ValueNotifier(0.0);
-//     _valueNotifier = ValueNotifier(0.0);
+//     _progress = ValueNotifier(1.0);
 //   }
 //
 //   void _toggleTimer() {
@@ -64,10 +61,10 @@
 //   }
 //
 //   void _updateProgress(double time) {
-//     final totalDuration = (_isWorkTime ? widget.workDuration : widget.breakDuration) * 60;
-//     final progressValue = 1 - (time / totalDuration);
-//     _progress.value = progressValue;
-//     _valueNotifier.value = progressValue * 100; // update the seek bar value
+//     int totalDuration = _isWorkTime
+//         ? widget.workDuration * 60
+//         : widget.breakDuration * 60;
+//     _progress.value = time / totalDuration;
 //   }
 //
 //   @override
@@ -81,56 +78,54 @@
 //         child: Column(
 //           mainAxisAlignment: MainAxisAlignment.center,
 //           children: [
-//             Text(
-//               _isWorkTime
-//                   ? 'Work Session $_currentSession of ${widget.sessions}'
-//                   : 'Break Session $_currentSession of ${widget.sessions}',
-//               style: TextStyle(fontSize: 30),
-//             ),
-//             SizedBox(height: 50),
-//             CircularSeekBar(
-//               width: double.infinity,
-//               height: 250,
-//               progress: _progress.value,
-//               barWidth: 8,
-//               startAngle: 45,
-//               sweepAngle: 270,
-//               strokeCap: StrokeCap.butt,
-//               progressGradientColors: const [
-//                 Colors.red,
-//                 Colors.orange,
-//                 Colors.yellow,
-//                 Colors.green,
-//                 Colors.blue,
-//                 Colors.indigo,
-//                 Colors.purple
-//               ],
-//               innerThumbRadius: 5,
-//               innerThumbStrokeWidth: 3,
-//               innerThumbColor: Colors.white,
-//               outerThumbRadius: 5,
-//               outerThumbStrokeWidth: 10,
-//               outerThumbColor: Colors.blueAccent,
-//               dashWidth: 1,
-//               dashGap: 2,
-//               animation: true,
-//               valueNotifier: _valueNotifier,
-//               child: Center(
-//                 child: Countdown(
-//                   controller: _controller,
-//                   seconds: _isWorkTime
-//                       ? widget.workDuration * 60
-//                       : widget.breakDuration * 60,
-//                   build: (_, double time) {
-//                     _updateProgress(time);
-//                     return Text(
-//                       '${(time / 60).floor().toString().padLeft(2, '0')}:${(time % 60).floor().toString().padLeft(2, '0')}',
-//                       style: TextStyle(fontSize: 50),
-//                     );
-//                   },
-//                   interval: Duration(seconds: 1),
-//                   onFinished: _nextSession,
-//                 ),
+//             Center(
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 children: [
+//                   Countdown(
+//                     controller: _controller,
+//                     seconds: _isWorkTime
+//                         ? widget.workDuration * 60
+//                         : widget.breakDuration * 60,
+//                     build: (_, double time) {
+//                       WidgetsBinding.instance.addPostFrameCallback((_) {
+//                         _updateProgress(time);
+//                       });
+//                       return Text(
+//                         '${(time / 60).floor().toString().padLeft(2, '0')}:${(time % 60).floor().toString().padLeft(2, '0')}',
+//                         style: TextStyle(fontSize: 50),
+//                       );
+//                     },
+//                     interval: Duration(seconds: 1),
+//                     onFinished: () {
+//                       _controller.pause(); // Pause the timer
+//                       showDialog(
+//                         context: context,
+//                         builder: (context) => AlertDialog(
+//                           content: Text('Session Completed!'),
+//                           actions: [
+//                             TextButton(
+//                               onPressed: () {
+//                                 Navigator.of(context).pop();
+//                                 _nextSession();
+//                                 _controller.resume(); // Resume the timer
+//                               },
+//                               child: Text('OK'),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                   SizedBox(height: 10),
+//                   Text(
+//                     _isWorkTime
+//                         ? '$_currentSession/${widget.sessions}'
+//                         : 'Break Session $_currentSession of ${widget.sessions}',
+//                     style: TextStyle(fontSize: 25),
+//                   ),
+//                 ],
 //               ),
 //             ),
 //             SizedBox(height: 50),
@@ -146,8 +141,8 @@
 // }
 import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:timer_count_down/timer_count_down.dart';
 import 'package:timer_count_down/timer_controller.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class TimerScreen extends StatefulWidget {
   final int workDuration;
@@ -169,15 +164,12 @@ class _TimerScreenState extends State<TimerScreen> {
   bool _isWorkTime = true;
   int _currentSession = 1;
   bool _isRunning = true;
-
   late ValueNotifier<double> _progress;
-  late ValueNotifier<double> _valueNotifier;
 
   @override
   void initState() {
     super.initState();
-    _progress = ValueNotifier(0.0);
-    _valueNotifier = ValueNotifier(0.0);
+    _progress = ValueNotifier(1.0);
   }
 
   void _toggleTimer() {
@@ -210,10 +202,10 @@ class _TimerScreenState extends State<TimerScreen> {
   }
 
   void _updateProgress(double time) {
-    final totalDuration = (_isWorkTime ? widget.workDuration : widget.breakDuration) * 60;
-    final progressValue = 1 - (time / totalDuration);
-    _progress.value = progressValue;
-    _valueNotifier.value = progressValue * 100; // update the seek bar value
+    int totalDuration = _isWorkTime
+        ? widget.workDuration * 60
+        : widget.breakDuration * 60;
+    _progress.value = 1.0 - (time / totalDuration);
   }
 
   @override
@@ -227,76 +219,88 @@ class _TimerScreenState extends State<TimerScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              _isWorkTime
-                  ? 'Work Session $_currentSession of ${widget.sessions}'
-                  : 'Break Session $_currentSession of ${widget.sessions}',
-              style: TextStyle(fontSize: 30),
-            ),
-            SizedBox(height: 50),
-            CircularSeekBar(
-              width: double.infinity,
-              height: 250,
-              progress: _progress.value,
-              barWidth: 8,
-              startAngle: 45,
-              sweepAngle: 270,
-              strokeCap: StrokeCap.butt,
-              progressGradientColors: const [
-                Colors.red,
-                Colors.orange,
-                Colors.yellow,
-                Colors.green,
-                Colors.blue,
-                Colors.indigo,
-                Colors.purple
-              ],
-              innerThumbRadius: 5,
-              innerThumbStrokeWidth: 3,
-              innerThumbColor: Colors.white,
-              outerThumbRadius: 5,
-              outerThumbStrokeWidth: 10,
-              outerThumbColor: Colors.blueAccent,
-              dashWidth: 1,
-              dashGap: 2,
-              animation: true,
-              valueNotifier: _valueNotifier,
-              child: Center(
-                child:Countdown(
-                  controller: _controller,
-                  seconds: _isWorkTime
-                      ? widget.workDuration * 60
-                      : widget.breakDuration * 60,
-                  build: (_, double time) {
-                    _updateProgress(time); // Update progress continuously
-                    return Text(
-                      '${(time / 60).floor().toString().padLeft(2, '0')}:${(time % 60).floor().toString().padLeft(2, '0')}',
-                      style: TextStyle(fontSize: 50),
-                    );
-                  },
-                  interval: Duration(seconds: 1),
-                  onFinished: () {
-                    _controller.pause(); // Pause the timer
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        content: Text('Session Completed!'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              _nextSession();
-                              _controller.resume(); // Resume the timer
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-
-              ),
+            ValueListenableBuilder<double>(
+              valueListenable: _progress,
+              builder: (context, progress, child) {
+                return CircularSeekBar(
+                  width: double.infinity,
+                  height: 250,
+                  progress: progress,
+                  barWidth: 8,
+                  startAngle: 0,
+                  sweepAngle: 360,
+                  strokeCap: StrokeCap.round,
+                  progressGradientColors: const [
+                    Colors.red,
+                    Colors.orange,
+                    Colors.yellow,
+                    Colors.green,
+                    Colors.blue,
+                    Colors.indigo,
+                    Colors.purple
+                  ],
+                  innerThumbRadius: 5,
+                  innerThumbStrokeWidth: 3,
+                  innerThumbColor: Colors.white,
+                  outerThumbRadius: 5,
+                  outerThumbStrokeWidth: 10,
+                  outerThumbColor: Colors.blueAccent,
+                  dashWidth: 1,
+                  dashGap: 2,
+                  animation: true,
+                  valueNotifier: _progress,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Countdown(
+                          controller: _controller,
+                          seconds: _isWorkTime
+                              ? widget.workDuration * 60
+                              : widget.breakDuration * 60,
+                          build: (_, double time) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _updateProgress(time);
+                            });
+                            return Text(
+                              '${(time / 60).floor().toString().padLeft(2, '0')}:${(time % 60).floor().toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 50),
+                            );
+                          },
+                          interval: Duration(seconds: 1),
+                          onFinished: () {
+                            _controller.pause(); // Pause the timer
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: Text('Session Completed!'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      _nextSession();
+                                      _controller.resume(); // Resume the timer
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          _isWorkTime
+                              ? '$_currentSession/${widget.sessions}'
+                              : 'Break $_currentSession/${widget.sessions}',
+                          style: TextStyle(fontSize: 25),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
             SizedBox(height: 50),
             ElevatedButton(
