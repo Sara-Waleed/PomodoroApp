@@ -213,6 +213,12 @@ class _TimerScreenState extends State<TimerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pomodoro Timer'),
+        actions: [
+       IconButton(onPressed: (){
+         Navigator.pushNamed(context, "History");
+
+       }, icon: Icon(Icons.history_edu_outlined)),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),

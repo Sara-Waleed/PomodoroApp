@@ -8,7 +8,6 @@ class Home extends StatelessWidget {
    Home({Key? key, required this.isDark, required this.Toggle}) : super(key: key);
    final VoidCallback Toggle;
    final bool isDark;
-   TextEditingController controller=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
